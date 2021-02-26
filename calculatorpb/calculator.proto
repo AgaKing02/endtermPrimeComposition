@@ -1,0 +1,30 @@
+syntax="proto3";
+
+package endtermPrimeCompostion;
+
+option go_package = "github.com\\AgaKing02\\grpc-go-course\\endtermPrimeCompostion\\calculatorpb;calculatorpb";
+
+message Calculating{
+   int64 number=1;
+}
+
+message CalculatorRequest{
+  Calculating calculating = 1;
+}
+
+message CalculatorResponse{
+  string result = 1;
+}
+
+message NumberRequest{
+  int64 numbers = 1;
+}
+
+message AverageResponse{
+  double result = 1;
+}
+
+service CalculateService{
+  rpc PrimeCompose(CalculatorRequest) returns(stream CalculatorResponse) {}
+  rpc ComputeAverage(stream NumberRequest) returns(AverageResponse) {}
+}
