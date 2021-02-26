@@ -9,6 +9,7 @@ import (
 	"net"
 	"time"
 )
+
 //Functions
 func Average(arr []int64) (avg float64) {
 	sm := 0.0
@@ -37,18 +38,18 @@ func Factors(n int) (pfs []int) {
 	return
 }
 
-
 type Server struct {
 	calculatorpb.UnimplementedCalculateServiceServer
 }
+
 //Structure
-func (s *Server) GetAverage(req *calculatorpb.CalculatorRequest, stream calculatorpb.CalculateService_PrimeComposeServer) error {
+func (s *Server) PrimeCompose(req *calculatorpb.CalculatorRequest, stream calculatorpb.CalculateService_PrimeComposeServer) error {
 	fmt.Printf("GreetManyTimes function was invoked with %v \n", req)
 	number := req.GetCalculating().GetNumber()
 	n := int(number)
 	arr := Factors(n)
 	for i := 0; i < len(arr); i++ {
-		res := &calculatorpb.CalculatorResponse{Result: fmt.Sprintf("%d) Hello, %v\n", n, arr[i])}
+		res := &calculatorpb.CalculatorResponse{Result: fmt.Sprintf("Number is: %v\n", arr[i])}
 		if err := stream.Send(res); err != nil {
 			log.Fatalf("error while sending greet many times responses: %v", err.Error())
 		}
@@ -56,8 +57,6 @@ func (s *Server) GetAverage(req *calculatorpb.CalculatorRequest, stream calculat
 	}
 	return nil
 }
-
-
 
 func (s *Server) ComputeAverage(stream calculatorpb.CalculateService_ComputeAverageServer) error {
 	fmt.Printf("AverageClient function was invoked with a streaming request\n")
@@ -76,7 +75,6 @@ func (s *Server) ComputeAverage(stream calculatorpb.CalculateService_ComputeAver
 		arr = append(arr, req.GetNumbers())
 	}
 }
-
 
 func main() {
 	l, err := net.Listen("tcp", ":50051")
