@@ -6,7 +6,7 @@ services:
       context: ./calculatorEndterm/calculator_client
       dockerfile: Dockerfile
     ports:
-      - 8080:8080
+      - 8081:8081
     tty:
       true
     depends_on:
